@@ -6,25 +6,55 @@ import './App.less';
 
 let lastHref
 
-const App = ({ children, dispatch, app, loading, location }) => {
-	
-	
-	
-	if (typeof window !== 'undefined') {
-		const href = window.location.href
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(this);
+    
+		if (typeof window !== 'undefined') {
+			const href = window.location.href
 
-	  if (lastHref !== href) {
-	    NProgress.start()
-	    if (!loading.global) {
-	      NProgress.done()
-	      lastHref = href
-	    }
-	  }
-	}
+		  if (lastHref !== href) {
+		    NProgress.start()
+		    if (!this.props.loading.global) {
+		      NProgress.done()
+		      lastHref = href
+		    }
+		  }
+		}
+    
+  }
 
-  return (
-    <div>{children}</div>
-  )
+  render() {
+  	return (
+	    <div>{this.props.children}</div>
+	  );
+  }
 }
 
-export default connect(({ app, loading }) => ({ app, loading }))(App)
+function mapDispatchToProps (dispatch, ownProps) {
+  return {
+    getBanner : () => {
+      dispatch({
+        type: 'index/fetchbanner'
+      });
+    },
+    onEndReached : (isLoading) => {
+      if (!isLoading) {
+        dispatch({
+          type: 'index/fetch'
+        });
+      }
+    }
+  }
+}
+
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return {
+    loading: state.loading,
+    pagedata: state.index
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
