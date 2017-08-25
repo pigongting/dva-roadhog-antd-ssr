@@ -1,0 +1,67 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "cp public/index.dev.html public/index.html && set PORT=5859 && roadhog server",
+    "server": "npm run build && node server/index.js",
+    "build": "cp public/index.ssr.html public/index.html && roadhog build",
+    "test": "jest --runInBand --no-cache --colors",
+    "lint": "eslint --ext .jsx,.js __test__",
+    "precommit": "npm run lint"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "modulePaths": [
+      "/shared/vendor/modules"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "bower_components",
+      "shared"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
+  },
+  "engines": {
+    "install-node": "6.9.2"
+  },
+  "dependencies": {
+    "antd": "^2.12.7",
+    "babel-runtime": "^6.9.2",
+    "css-modules-require-hook": "4.1.0",
+    "dva": "^1.2.1",
+    "dva-loading": "^0.2.1",
+    "express-dva-ssr": "0.2.3",
+    "intl": "^1.2.5",
+    "less-vars-to-js": "^1.2.0",
+    "node-hook": "1.0.0",
+    "nprogress": "^0.2.0",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-intl": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-dva-hmr": "^0.3.2",
+    "babel-plugin-dynamic-import-node": "^1.0.2",
+    "babel-plugin-dynamic-import-node-sync": "^1.0.1",
+    "babel-plugin-import": "^1.4.0",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0",
+    "expect": "^1.20.2",
+    "husky": "^0.12.0",
+    "jest": "^20.0.4",
+    "redbox-react": "^1.3.2",
+    "roadhog": "^1.1.2"
+  }
+}
