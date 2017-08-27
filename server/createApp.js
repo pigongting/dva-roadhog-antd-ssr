@@ -27,10 +27,14 @@ function createApp({ history, initialState }, id) {
    __v2_compatible__: true,
   }
 
-  initialState: { locale: 'zh', app: { SSR_ENV: { platform: 'pc' } } }
+  initialState: { ssr: { path: pathname, locale: locale, }, app: { SSR_ENV: { platform: 'pc' } } }
 
   id: o2vinrk9qb
   */
+
+  const pathReg = new RegExp(`/${initialState.ssr.locale}/`);
+  const modelname = initialState.ssr.path.replace(pathReg, '');
+
   const app = dva({ history, initialState });
 
   app.model({
@@ -39,9 +43,11 @@ function createApp({ history, initialState }, id) {
   });
 
   app.model({
-    namespace: 'locale',
-    state: initialState.locale,
+    namespace: 'ssr',
+    state: {},
   });
+
+  app.model(require(`../src/models/${modelname}`));
 
   app.use(Loading({
     namespace: 'loading',

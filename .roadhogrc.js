@@ -1,5 +1,9 @@
-{
-  "entry": "src/index.js",
+export default {
+  "entry": {
+    app: "./src/index.js",
+    common: "./src/vendor.js"
+  },
+  multipage: true,
   "publicPath": "/static/",
   "theme": "./theme.config.js" ,
   "env": {

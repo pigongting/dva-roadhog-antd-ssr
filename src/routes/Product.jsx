@@ -29,9 +29,9 @@ class Users extends React.Component {
     // console.log(this);
 
     if (typeof window !== 'undefined') {
-      import(/* webpackChunkName: "lodash" */ 'lodash')
-      .then(_ => {
-        console.log(149174);
+      import(/* webpackChunkName: "moment" */ 'moment')
+      .then(() => {
+        console.log(9999999999999999999999);
       })
       .catch(err => console.log('Failed to load moment', err));
     }

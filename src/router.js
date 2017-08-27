@@ -1,53 +1,36 @@
 import React from 'react';
 import { Router } from 'dva/router';
-import App from './routes/App';
+import routes from './routes';
 
 function RouterConfig({ history, app }) {
 
   let locale = 'zh';
 
-  const pathname = window.location.pathname;
+  const pathname = (window.location.pathname).replace(/\/$/, '');
   const localeReg = new RegExp("/en/|/zh/");
+
+  if (!localeReg.test(pathname)) {
+    if (pathname === '') {
+      history.replace('/zh/index');
+    } else {
+      history.replace('/zh'+ pathname);
+    }
+  }
 
   if (localeReg.test(pathname)) {
     locale = pathname.split('/')[1];
   }
 
   app.model({
-    namespace: 'locale',
-    state: locale
+    namespace: 'ssr',
+    state: {
+      path: pathname,
+      locale: locale,
+    },
   });
 
-  const routes = [
-    {
-      path: '/',
-      indexRoute: { onEnter: (nextState, replace) => replace(`/${locale}/index`) },
-    },
-    {
-      path: `/${locale}/index`,
-      component: App,
-      getIndexRoute (nextState, cb) {
-        import(/* webpackChunkName: "IndexPage" */ './routes/IndexPage')
-        .then((data) => {
-          cb(null, { component: data });
-        })
-        .catch(err => console.log('Failed to load IndexPage', err));
-      },
-    },
-    {
-      path: `/${locale}/users`,
-      getComponent (nextState, cb) {
-        import(/* webpackChunkName: "Users" */ './routes/Users')
-        .then((data) => {
-          cb(null, data);
-        })
-        .catch(err => console.log('Failed to load Users', err));
-      },
-    }
-  ];
-
   return (
-    <Router history={history} routes={routes} />
+    <Router history={history} routes={routes(locale, app)} />
   );
 }
 

@@ -2,12 +2,11 @@
   "private": true,
   "scripts": {
     "start": "cp public/index.dev.html public/index.html && set PORT=5859 && roadhog server",
-    "server": "npm run build && node server/index.js",
-    "fastserver": "node server/index.js",
     "build": "cp public/index.ssr.html public/index.html && roadhog build",
+    "server": "set NODE_ENV=production&& node server/index.js",
+    "build:server": "npm run build && npm run server",
     "test": "jest --runInBand --no-cache --colors",
-    "lint": "eslint --ext .jsx,.js __test__",
-    "precommit": "npm run lint"
+    "lint": "eslint --ext .jsx,.js __test__"
   },
   "jest": {
     "testEnvironment": "node",

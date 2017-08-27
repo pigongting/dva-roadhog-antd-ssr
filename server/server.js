@@ -7,10 +7,17 @@ const app = express();
 app.use('/static', express.static(path.join(__dirname, '../dist')));
 
 app.use((req, res, next) => {
-  if (req.url === '/') {
-    res.redirect('/zh/index');
-  } else {
+  const localeReg = new RegExp("/en/|/zh/");
+  const pathname = (req._parsedUrl.pathname).replace(/\/$/, '');
+
+  if (localeReg.test(pathname)) {
     next();
+  } else {
+    if (pathname === '') {
+      res.redirect('/zh/index');
+    } else {
+      res.redirect('/zh'+ pathname);
+    }
   }
 });
 
