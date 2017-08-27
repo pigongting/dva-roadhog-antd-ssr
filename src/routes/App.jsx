@@ -9,8 +9,8 @@ let lastHref
 class App extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this);
-    
+    // console.log(this);
+
 		if (typeof window !== 'undefined') {
 			const href = window.location.href
 
@@ -22,7 +22,7 @@ class App extends React.Component {
 		    }
 		  }
 		}
-    
+
   }
 
   render() {
@@ -32,29 +32,11 @@ class App extends React.Component {
   }
 }
 
-function mapDispatchToProps (dispatch, ownProps) {
-  return {
-    getBanner : () => {
-      dispatch({
-        type: 'index/fetchbanner'
-      });
-    },
-    onEndReached : (isLoading) => {
-      if (!isLoading) {
-        dispatch({
-          type: 'index/fetch'
-        });
-      }
-    }
-  }
-}
-
 function mapStateToProps(state, ownProps) {
-  console.log(state);
+  // console.log(state);
   return {
     loading: state.loading,
-    pagedata: state.index
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

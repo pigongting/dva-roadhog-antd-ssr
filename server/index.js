@@ -1,9 +1,13 @@
 const fs = require('fs');
+const path = require('path');
 const urlLoader = require('url-loader');
 
 require('babel-register');
 
+require("babel-polyfill");
+
 require('css-modules-require-hook')({
+  rootDir: path.join(__dirname, '_-', '_-', '_-'),
   generateScopedName: '[local]___[hash:base64:5]',
   extensions: ['.css','.less'],
 });

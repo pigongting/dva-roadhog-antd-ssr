@@ -23,7 +23,7 @@ function onChange(date, dateString) {
   console.log(date, dateString);
 }
 
-class IndexPage extends React.Component {
+class Users extends React.Component {
   constructor(props) {
     super(props);
     // console.log(this);
@@ -39,23 +39,7 @@ class IndexPage extends React.Component {
 
   render() {
     return (
-      <div className={styles.normal}>
-        <h1 className={styles.title}>Yay! Welcome to dva!</h1>
-        <p><FormattedMessage id="hello" defaultMessage="无语言包" /></p>
-        <div className={styles.welcome} />
-        <ul className={styles.list}>
-          <li>To get started, edit <code>src/index.js</code> and save to reload.</li>
-          <li><a href="https://github.com/dvajs/dva-docs/blob/master/v1/en-us/getting-started.md">Getting Started</a></li>
-        </ul>
-        <Link to={`/${this.props.locale}/users`}>Users</Link>
-        <div>
-          <DatePicker onChange={onChange} />
-          <br />
-          <MonthPicker onChange={onChange} placeholder="Select month" />
-          <br />
-          <RangePicker onChange={onChange} />
-        </div>
-      </div>
+      <div>Users</div>
     );
   }
 }
@@ -87,4 +71,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(pageWithIntl(IndexPage));
+export default connect(mapStateToProps, mapDispatchToProps)(pageWithIntl(Users));

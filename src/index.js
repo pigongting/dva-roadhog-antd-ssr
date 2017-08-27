@@ -6,13 +6,17 @@ import Loading from 'dva-loading';
 
 // 每个 dispatch 时都会在控制台输出友好的信息
 // import { createLogger } from 'redux-logger'
-// onAction: [createLogger()],
+// onAction: [createLogger()]
 
 // 处理 onError 的函数
 import onError from './utils/dvaOnError';
 
 // 模板文件
 import '../public/index.html';
+
+// 性能分析
+import Perf from 'react-addons-perf';
+window.Perf = Perf;
 
 // 1. Initialize
 const app = dva({
@@ -31,7 +35,7 @@ app.use(Loading({
 app.model(require('./models/app'));
 
 // 4. Router
-app.router(require('./router'));
+app.router(require('./router.build'));
 
 // 5. Start
 app.start('#root');

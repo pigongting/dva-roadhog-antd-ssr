@@ -27,21 +27,7 @@ function RouterConfig({ history, app }) {
       path: `/${locale}/index`,
       component: App,
       getIndexRoute (nextState, cb) {
-        import(/* webpackChunkName: "IndexPage" */ './routes/IndexPage')
-        .then((data) => {
-          cb(null, { component: data });
-        })
-        .catch(err => console.log('Failed to load IndexPage', err));
-      },
-    },
-    {
-      path: `/${locale}/users`,
-      getComponent (nextState, cb) {
-        import(/* webpackChunkName: "Users" */ './routes/Users')
-        .then((data) => {
-          cb(null, data);
-        })
-        .catch(err => console.log('Failed to load Users', err));
+        cb(null, { component: require('./routes/IndexPage') });
       },
     }
   ];

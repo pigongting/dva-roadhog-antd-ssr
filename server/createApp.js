@@ -27,16 +27,20 @@ function createApp({ history, initialState }, id) {
    __v2_compatible__: true,
   }
 
-  initialState: { app: { SSR_ENV: { platform: 'pc' } } }
+  initialState: { locale: 'zh', app: { SSR_ENV: { platform: 'pc' } } }
 
   id: o2vinrk9qb
   */
-
   const app = dva({ history, initialState });
 
   app.model({
     namespace: 'app',
     state: {},
+  });
+
+  app.model({
+    namespace: 'locale',
+    state: initialState.locale,
   });
 
   app.use(Loading({
