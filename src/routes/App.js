@@ -9,23 +9,23 @@ let lastHref
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // console.log(this);
-
-		if (typeof window !== 'undefined') {
-			const href = window.location.href
-
-		  if (lastHref !== href) {
-		    NProgress.start()
-		    if (!this.props.loading.global) {
-		      NProgress.done()
-		      lastHref = href
-		    }
-		  }
-		}
-
   }
 
   render() {
+    // console.log(this);
+    
+	if (typeof window !== 'undefined') {
+		const href = window.location.href
+
+	  if (lastHref !== href) {
+	    NProgress.start()
+	    if (!this.props.loading.global) {
+	      NProgress.done()
+	      lastHref = href
+	    }
+	  }
+	}
+
   	return (
 	    <div>{this.props.children}</div>
 	  );

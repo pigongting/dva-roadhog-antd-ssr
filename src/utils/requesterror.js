@@ -1,3 +1,25 @@
+export function retry(dispatch, frommodel) {
+  setTimeout(() => {
+    const pathname = window.location.pathname.replace(/[/]/g, '_');
+    const errorActionHook = `fetchErrorActionHook${pathname}`;
+
+    for (const i in window[errorActionHook]) {
+      if (window[errorActionHook][i]) {
+        const item = window[errorActionHook][i];
+
+        if (frommodel) {
+          const namespaceReg = new RegExp(`${item.namespace}/`);
+          item.type = (item.type).replace(namespaceReg, '');
+        }
+
+        dispatch(item);
+      }
+    }
+
+    window[errorActionHook] = {};
+  }, 300);
+}
+
 export default function onError(e, dispatch) {
   const pathname = window.location.pathname.replace(/[/]/g, '_');
   const errorActionHook = `fetchErrorActionHook${pathname}`;
@@ -26,22 +48,25 @@ export default function onError(e, dispatch) {
     if (msg.erroraction) {
       const action = msg.erroraction;
 
+      // 取出 namespace
+      const namespace = action.type.split('/')[0];
+
+      // 保存 namespace
+      action.namespace = namespace;
+
       // 保存错误请求
       if (!window[errorActionHook]) {
         window[errorActionHook] = {};
       }
-
       window[errorActionHook][action.type] = action;
 
-      dispatch({
-        type: 'users/addRemote',
-        payload: true,
-      });
+      // 触发显示 retry 按钮的动作
+      dispatch({ type: `${namespace}/fetcherror`, erroraction: action });
     }
 
     // 接口错误提示错误原因
     if (msg.api_code) {
-      alert(msg.message);
+      console.log(msg.message);
     }
   }
 }

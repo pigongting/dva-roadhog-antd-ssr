@@ -2,15 +2,20 @@ import React from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 
+// antd 组件
+import { DatePicker } from 'antd';
+
 // 内容国际化支持
 import { FormattedMessage, FormattedNumber } from 'react-intl';
-import pageWithIntl from '../locales/PageWithIntl'
+import pageWithIntl from '../locales/PageWithIntl';
+
+// 请求重试
+import { retry } from '../utils/requesterror';
 
 // 本页样式
 import styles from './IndexPage.css';
 
-// antd 组件
-import { DatePicker } from 'antd';
+
 const { MonthPicker, RangePicker } = DatePicker;
 
 // import { Button } from 'antd';
@@ -39,8 +44,8 @@ class IndexPage extends React.Component {
   render() {
     return (
       <div className={styles.normal}>
-        <h1 className={styles.title}>Yay! Welcome to dva!</h1>
-        <p><FormattedMessage id="superHello" defaultMessage="无语言包" values={ { someone: 'pigongting' } } /></p>
+        <h1 className={styles.title} onClick={() => { this.props.onRetry(); }}>Yay! Welcome to dva!</h1>
+        <p><FormattedMessage id="superHello" defaultMessage="无语言包" values={{ someone: 'pigongting' }} /></p>
         <FormattedNumber value={1000} />
         <div className={styles.welcome} />
         <ul className={styles.list}>
@@ -60,21 +65,13 @@ class IndexPage extends React.Component {
   }
 }
 
-function mapDispatchToProps (dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
-    getBanner : () => {
-      dispatch({
-        type: 'index/fetchbanner'
-      });
+    onRetry: () => {
+      console.log('456456');
+      retry(dispatch);
     },
-    onEndReached : (isLoading) => {
-      if (!isLoading) {
-        dispatch({
-          type: 'index/fetch'
-        });
-      }
-    }
-  }
+  };
 }
 
 function mapStateToProps(state, ownProps) {
@@ -83,7 +80,7 @@ function mapStateToProps(state, ownProps) {
   return {
     loading: state.loading.effects['index/fetch'],
     pagedata: 'state.index',
-    locale: state.ssr.locale
+    locale: state.ssr.locale,
   };
 }
 

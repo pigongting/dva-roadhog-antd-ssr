@@ -8,14 +8,16 @@ import Loading from 'dva-loading';
 // import { createLogger } from 'redux-logger'
 // onAction: [createLogger()]
 
+// 性能分析
+import Perf from 'react-addons-perf';
+
 // 处理 onError 的函数
-import onError from './utils/dvaOnError';
+import onError from './utils/requesterror';
 
 // 模板文件
 import '../public/index.html';
 
 // 性能分析
-import Perf from 'react-addons-perf';
 window.Perf = Perf;
 
 // 1. Initialize
@@ -36,6 +38,8 @@ app.model(require('./models/app'));
 
 // 4. Router
 app.router(require('./router'));
+
+// console.log(app);
 
 // 5. Start
 app.start('#root');
