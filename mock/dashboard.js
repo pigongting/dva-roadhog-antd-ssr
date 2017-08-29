@@ -1,6 +1,6 @@
 import Mock from 'mockjs';
-import config from '../src/utils/config';
-import { color } from '../src/utils/theme';
+import config from '../config/config';
+import { color } from '../config/theme';
 
 const { apiPrefix } = config;
 

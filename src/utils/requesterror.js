@@ -21,8 +21,13 @@ export function retry(dispatch, frommodel) {
 }
 
 export default function onError(e, dispatch) {
-  const pathname = window.location.pathname.replace(/[/]/g, '_');
-  const errorActionHook = `fetchErrorActionHook${pathname}`;
+  let pathname = '';
+  let errorActionHook = '';
+
+  if (typeof window !== 'undefined') {
+    pathname = window.location.pathname.replace(/[/]/g, '_');
+    errorActionHook = `fetchErrorActionHook${pathname}`;
+  }
 
   let msg = null;
   try {
@@ -55,10 +60,13 @@ export default function onError(e, dispatch) {
       action.namespace = namespace;
 
       // 保存错误请求
-      if (!window[errorActionHook]) {
-        window[errorActionHook] = {};
+      if (typeof window !== 'undefined')
+      {
+        if (!global[errorActionHook]) {
+          global[errorActionHook] = {};
+        }
+        global[errorActionHook][action.type] = action;
       }
-      window[errorActionHook][action.type] = action;
 
       // 触发显示 retry 按钮的动作
       dispatch({ type: `${namespace}/fetcherror`, erroraction: action });

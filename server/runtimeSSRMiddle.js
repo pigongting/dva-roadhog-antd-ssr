@@ -4,6 +4,9 @@ import createApp from './createApp';
 import renderFullPage from './renderFullPage';
 import routes from '../src/routes';
 
+// 处理 国际化地址 的中间件
+import { getpruepath, getlocalname } from '../src/utils/localpath';
+
 function onRenderSuccess({ html, url, env, state}) {
   // console.log(html);
   // console.log(url);
@@ -12,27 +15,21 @@ function onRenderSuccess({ html, url, env, state}) {
 }
 
 function runtimeSSRMiddleWarp(req, res, next) {
-  let locale = 'zh';
-
-  const localeReg = new RegExp("/en/|/zh/");
-  const pathname = (req._parsedUrl.pathname).replace(/\/$/, '');
-
-  if (localeReg.test(pathname)) {
-    locale = pathname.split('/')[1];
-  }
+  const pruepath = getpruepath(req._parsedUrl.pathname);
+  const localename = getlocalname(pruepath);
 
   ssr.runtimeSSRMiddle({
-    routes: routes(locale),
+    routes: routes(localename),
     createApp,
     renderFullPage,
     onRenderSuccess,
     initialState: {
       ssr: {
-        path: pathname,
-        locale: locale,
+        path: pruepath,
+        locale: localename,
       },
     },
-  })(req, res, next)
+  })(req, res, next);
 }
 
 export default runtimeSSRMiddleWarp;

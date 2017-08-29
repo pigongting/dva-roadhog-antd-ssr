@@ -3,6 +3,12 @@ import dva from 'dva';
 import Loading from 'dva-loading';
 import { RouterContext } from 'dva/router';
 
+// 处理 onError 的函数
+import onError from '../src/utils/requesterror';
+
+// 处理 国际化地址 的函数
+import { removelocal } from '../src/utils/localpath';
+
 function createApp({ history, initialState }, id) {
   /*
   在调用的时候会传递着几个值进来
@@ -32,10 +38,9 @@ function createApp({ history, initialState }, id) {
   id: o2vinrk9qb
   */
 
-  const pathReg = new RegExp(`/${initialState.ssr.locale}/`);
-  const modelname = initialState.ssr.path.replace(pathReg, '');
+  const modelname = removelocal(initialState.ssr.path);
 
-  const app = dva({ history, initialState });
+  const app = dva({ history, onError, initialState });
 
   app.model({
     namespace: 'app',

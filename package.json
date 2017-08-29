@@ -6,7 +6,8 @@
     "server": "set NODE_ENV=production&& node server/index.js",
     "build:server": "npm run build && npm run server",
     "test": "jest --runInBand --no-cache --colors",
-    "lint": "eslint --ext .jsx,.js __test__"
+    "lint": "eslint --ext .jsx,.js config",
+    "precommit": "npm run lint"
   },
   "jest": {
     "testEnvironment": "node",
@@ -37,7 +38,6 @@
     "dva": "^1.2.1",
     "dva-loading": "^0.2.1",
     "express-dva-ssr": "0.2.3",
-    "express-urlrewrite": "^1.2.0",
     "immutability-helper": "^2.3.1",
     "intl": "^1.2.5",
     "intl-locales-supported": "^1.0.0",

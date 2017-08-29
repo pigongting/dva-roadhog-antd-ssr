@@ -1,5 +1,7 @@
 import update from 'immutability-helper';
 import * as usersService from '../services/index';
+// 处理 国际化地址 的函数
+import { removelocal } from '../utils/localpath';
 // 处理 onError 的函数
 import { retry } from '../utils/requesterror';
 
@@ -33,7 +35,7 @@ export default {
       // }, 5000);
 
       return history.listen(({ pathname, query }) => {
-        if (pathname === '/zh/index') {
+        if (removelocal(pathname) === '/index') {
           dispatch({ type: 'fetch', payload: query });
         } else {
           dispatch({ type: 'resetstate' });

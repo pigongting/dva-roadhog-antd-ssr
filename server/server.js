@@ -1,25 +1,14 @@
 import express from 'express';
 import path from 'path';
-import rewrite from 'express-urlrewrite';
+
+// 处理 国际化地址 的中间件
+import { localMiddle } from '../src/utils/localpath';
 
 const app = express();
 
 app.use('/static', express.static(path.join(__dirname, '../dist')));
 
-app.use((req, res, next) => {
-  const localeReg = new RegExp("/en/|/zh/");
-  const pathname = (req._parsedUrl.pathname).replace(/\/$/, '');
-
-  if (localeReg.test(pathname)) {
-    next();
-  } else {
-    if (pathname === '') {
-      res.redirect('/zh/index');
-    } else {
-      res.redirect('/zh'+ pathname);
-    }
-  }
-});
+app.use(localMiddle);
 
 app.use(require('./runtimeSSRMiddle'));
 

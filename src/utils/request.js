@@ -14,8 +14,8 @@ function checkStatus(response, action, timestamp) {
   }
 
   // console.log(timestamp);
-  // console.log(window[`${action.type}_fetchTimestamp`]);
-  window[`${action.type}_fetchTimestamp`] = undefined;
+  // console.log(global[`${action.type}_fetchTimestamp`]);
+  global[`${action.type}_fetchTimestamp`] = undefined;
 
   throw new Error(JSON.stringify({
     status: 'fetcherror',
@@ -44,8 +44,8 @@ function checkData(data, action, timestamp) {
   // }
 
   // console.log(timestamp);
-  // console.log(window[`${action.type}_fetchTimestamp`]);
-  window[`${action.type}_fetchTimestamp`] = undefined;
+  // console.log(global[`${action.type}_fetchTimestamp`]);
+  global[`${action.type}_fetchTimestamp`] = undefined;
 
   // 虚拟返回数据
   throw new Error(JSON.stringify({
@@ -70,11 +70,11 @@ function checkData(data, action, timestamp) {
  * @return {object}             a promise
  */
 function timeoutHandle(timeout, action) {
-  clearTimeout(window[`${action.type}_fetchTimeoutId`]);
-  window[`${action.type}_fetchTimeoutId`] = undefined;
+  clearTimeout(global[`${action.type}_fetchTimeoutId`]);
+  global[`${action.type}_fetchTimeoutId`] = undefined;
 
   const p = new Promise((resolve, reject) => {
-    window[`${action.type}_fetchTimeoutId`] = setTimeout(() => {
+    global[`${action.type}_fetchTimeoutId`] = setTimeout(() => {
       reject({
         status: 'fetcherror',
         message: '请求超时',
@@ -107,7 +107,7 @@ export default async function request(action, { mode = 'wait', timeout = 10000 }
   // console.log(timestamp);
 
   // 等待上一个请求完成
-  if (mode === 'wait' && window[`${action.type}_fetchTimestamp`]) {
+  if (mode === 'wait' && global[`${action.type}_fetchTimestamp`]) {
     throw new Error(JSON.stringify({
       status: 'fetcherror',
       message: '等待上一个请求完成',
@@ -115,13 +115,13 @@ export default async function request(action, { mode = 'wait', timeout = 10000 }
   }
 
   // 停止上一个请求，仅使用新请求的返回值
-  if (mode === 'stop' && window[`${action.type}_fetchTimestamp`]) {
-    window[`${action.type}_fetchTimestamp`] = timestamp;
+  if (mode === 'stop' && global[`${action.type}_fetchTimestamp`]) {
+    global[`${action.type}_fetchTimestamp`] = timestamp;
   }
 
   // 干净的请求
-  if (window[`${action.type}_fetchTimestamp`] === undefined) {
-    window[`${action.type}_fetchTimestamp`] = timestamp;
+  if (global[`${action.type}_fetchTimestamp`] === undefined) {
+    global[`${action.type}_fetchTimestamp`] = timestamp;
   }
 
   // 请求设置
@@ -142,13 +142,13 @@ export default async function request(action, { mode = 'wait', timeout = 10000 }
     timeoutHandle(timeout, action),
     fetch(options.Url, fetchset),
   ]).then((res) => {
-    clearTimeout(window[`${action.type}_fetchTimeoutId`]);
-    window[`${action.type}_fetchTimeoutId`] = undefined;
+    clearTimeout(global[`${action.type}_fetchTimeoutId`]);
+    global[`${action.type}_fetchTimeoutId`] = undefined;
     return res;
   }).catch((err) => {
     // console.log(timestamp);
-    // console.log(window[`${action.type}_fetchTimestamp`]);
-    window[`${action.type}_fetchTimestamp`] = undefined;
+    // console.log(global[`${action.type}_fetchTimestamp`]);
+    global[`${action.type}_fetchTimestamp`] = undefined;
     throw err;
     // err 可能的值
     // Error: {"status":"error","message":"请求超时"}
@@ -156,9 +156,9 @@ export default async function request(action, { mode = 'wait', timeout = 10000 }
   });
 
   // 不匹配的请求
-  if (window[`${action.type}_fetchTimestamp`] !== timestamp) {
+  if (global[`${action.type}_fetchTimestamp`] !== timestamp) {
     // console.log(timestamp);
-    // console.log(window[`${action.type}_fetchTimestamp`]);
+    // console.log(global[`${action.type}_fetchTimestamp`]);
     throw new Error(JSON.stringify({
       status: 'fetcherror',
       message: '被抛弃的请求',
@@ -175,10 +175,7 @@ export default async function request(action, { mode = 'wait', timeout = 10000 }
   checkData(data, action, timestamp);
 
   // 定义返回结果
-  const ret = {
-    data,
-    headers: 10,
-  };
+  const ret = { data, headers: {} };
 
   // 从请求返回值的头信息中获取信息
   if (response.headers.get('x-total-count')) {
@@ -187,7 +184,7 @@ export default async function request(action, { mode = 'wait', timeout = 10000 }
 
   // return 返回结果
   // console.log(timestamp);
-  // console.log(window[`${action.type}_fetchTimestamp`]);
-  window[`${action.type}_fetchTimestamp`] = undefined;
+  // console.log(global[`${action.type}_fetchTimestamp`]);
+  global[`${action.type}_fetchTimestamp`] = undefined;
   return ret;
 }

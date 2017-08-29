@@ -22,7 +22,7 @@
     JSON.stringify(map)
     ```
 */
-let DICT = {
+const DICT = {
   110000: '北京',
   110100: '北京市',
   110101: '东城区',
@@ -4019,44 +4019,65 @@ let DICT = {
   820200: '离岛',
   990000: '海外',
   990100: '海外',
-}
+};
 
 // id pid/parentId name children
 const tree = (list) => {
-  let mapped = {}
-  let item
+  const mapped = {};
+  let item;
+
   for (let i = 0; i < list.length; i++) {
-    item = list[i]
-    if (!item || !item.id) continue
-    mapped[item.id] = item
-  }
+    item = list[i];
 
-  let result = []
-  for (let ii = 0; ii < list.length; ii++) {
-    item = list[ii]
+    // if (!item || !item.id) continue;
+    // mapped[item.id] = item;
 
-    if (!item) continue
-            /* jshint -W041 */
-    if (item.pid === undefined && item.parentId === undefined) {
-      result.push(item)
-      continue
+    if (item && item.id) {
+      mapped[item.id] = item;
     }
-    let parent = mapped[item.pid] || mapped[item.parentId]
-    if (!parent) continue
-    if (!parent.children) parent.children = []
-    parent.children.push(item)
   }
-  return result
-}
 
-let DICT_FIXED = (function () {
-  let fixed = []
-  for (let id in DICT) {
+  const result = [];
+  for (let ii = 0; ii < list.length; ii++) {
+    item = list[ii];
+
+    // if (!item) continue;
+    //         /* jshint -W041 */
+    // if (item.pid === undefined && item.parentId === undefined) {
+    //   result.push(item);
+    //   continue;
+    // }
+    // const parent = mapped[item.pid] || mapped[item.parentId];
+    // if (!parent) continue;
+    // if (!parent.children) parent.children = [];
+    // parent.children.push(item);
+
+    if (item) {
+      if (item.pid === undefined && item.parentId === undefined) {
+        result.push(item);
+      }
+
+      if (item.pid !== undefined || item.parentId !== undefined) {
+        const parent = mapped[item.pid] || mapped[item.parentId];
+
+        if (parent) {
+          if (!parent.children) parent.children = [];
+          parent.children.push(item);
+        }
+      }
+    }
+  }
+  return result;
+};
+
+const DICT_FIXED = ((() => {
+  const fixed = [];
+  for (const id in DICT) {
     if ({}.hasOwnProperty.call(DICT, id)) {
-      let pid
+      let pid;
       if (id.slice(2, 6) !== '0000') {
         pid = id.slice(4, 6) === '00' ? (`${id.slice(0, 2)}0000`) :
-        `${id.slice(0, 4)}00`
+        `${id.slice(0, 4)}00`;
       }
       fixed.push({
         id,
@@ -4064,10 +4085,10 @@ let DICT_FIXED = (function () {
         name: DICT[id],
         value: DICT[id],
         label: DICT[id],
-      })
+      });
     }
   }
-  return tree(fixed)
-}())
+  return tree(fixed);
+})());
 
-module.exports = DICT_FIXED
+module.exports = DICT_FIXED;

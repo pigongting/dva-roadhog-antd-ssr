@@ -1,38 +1,38 @@
-const Mock = require('mockjs')
-const config = require('../src/utils/config')
+const Mock = require('mockjs');
+const config = require('../config/config');
 
 const queryArray = (array, key, keyAlias = 'key') => {
   if (!(array instanceof Array)) {
-    return null
+    return null;
   }
-  let data
+  let data;
 
   for (const item of array) {
     if (item[keyAlias] === key) {
-      data = item
-      break
+      data = item;
+      break;
     }
   }
 
   if (data) {
-    return data
+    return data;
   }
-  return null
-}
+  return null;
+};
 
 const NOTFOUND = {
   message: 'Not Found',
   documentation_url: 'http://localhost:8000/request',
-}
+};
 
 
-let postId = 0
+let postId = 0;
 const posts = Mock.mock({
   'data|100': [
     {
-      id () {
-        postId += 1
-        return postId + 10000
+      id() {
+        postId += 1;
+        return postId + 10000;
       },
       'status|1-2': 1,
       title: '@title',
@@ -44,15 +44,15 @@ const posts = Mock.mock({
       visibility: () => {
         return Mock.mock('@pick(["Public",'
           + '"Password protected", '
-          + '"Private"])')
+          + '"Private"])');
       },
       date: '@dateTime',
-      image () {
-        return Mock.Random.image('100x100', Mock.Random.color(), '#757575', 'png', this.author.substr(0, 1))
+      image() {
+        return Mock.Random.image('100x100', Mock.Random.color(), '#757575', 'png', this.author.substr(0, 1));
       },
     },
   ],
-}).data
+}).data;
 
 module.exports = {
   queryArray,
@@ -60,4 +60,4 @@ module.exports = {
   Mock,
   posts,
   config,
-}
+};
