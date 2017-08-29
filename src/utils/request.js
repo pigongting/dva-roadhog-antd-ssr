@@ -99,7 +99,7 @@ function timeoutHandle(timeout, action) {
                                 ...
  * @return {object}             An object containing either "data" or "err"
  */
-export default async function request(action, { mode = 'wait', timeout = 10000 }, options) {
+export default async function request(action, { mode = 'wait', timeout = 10000 }, options, callback) {
   // console.log(action);
 
   // 请求时间戳
@@ -186,5 +186,6 @@ export default async function request(action, { mode = 'wait', timeout = 10000 }
   // console.log(timestamp);
   // console.log(global[`${action.type}_fetchTimestamp`]);
   global[`${action.type}_fetchTimestamp`] = undefined;
+  callback(ret);
   return ret;
 }

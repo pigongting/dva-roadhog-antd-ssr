@@ -2,15 +2,16 @@ import React from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 
+// antd 组件
+import { DatePicker } from 'antd';
+
 // 内容国际化支持
 import { FormattedMessage } from 'react-intl';
-import pageWithIntl from '../locales/PageWithIntl'
+import pageWithIntl from '../locales/PageWithIntl';
 
 // 本页样式
 import styles from './IndexPage.css';
 
-// antd 组件
-import { DatePicker } from 'antd';
 const { MonthPicker, RangePicker } = DatePicker;
 
 // import { Button } from 'antd';
@@ -30,7 +31,7 @@ class Users extends React.Component {
 
     if (typeof window !== 'undefined') {
       import(/* webpackChunkName: "lodash" */ 'lodash')
-      .then(_ => {
+      .then((_) => {
         console.log(149174);
       })
       .catch(err => console.log('Failed to load moment', err));
@@ -44,21 +45,21 @@ class Users extends React.Component {
   }
 }
 
-function mapDispatchToProps (dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
-    getBanner : () => {
+    getBanner: () => {
       dispatch({
-        type: 'index/fetchbanner'
+        type: 'index/fetchbanner',
       });
     },
-    onEndReached : (isLoading) => {
+    onEndReached: (isLoading) => {
       if (!isLoading) {
         dispatch({
-          type: 'index/fetch'
+          type: 'index/fetch',
         });
       }
-    }
-  }
+    },
+  };
 }
 
 function mapStateToProps(state, ownProps) {
@@ -67,7 +68,7 @@ function mapStateToProps(state, ownProps) {
   return {
     loading: state.loading.effects['index/fetch'],
     pagedata: 'state.index',
-    locale: state.ssr.locale
+    locale: state.ssr.locale,
   };
 }
 

@@ -14,6 +14,7 @@ export default {
     fetcherror(state, action) {
       console.log(state);
       console.log(action);
+      console.log(update);
       return { ...state };
     },
   },
@@ -26,6 +27,8 @@ export default {
       console.log(data);
 
       // yield put({ type: 'save', payload: data });
+
+      return data;
     },
   },
   subscriptions: {
