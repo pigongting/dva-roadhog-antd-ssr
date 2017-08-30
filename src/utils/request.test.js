@@ -29,7 +29,7 @@ test('测试异步-方法3-Async/Await-成功', async () => {
   // expect.assertions(1);
   const data = await request({ type: 'index/fetch' }, {}, { Url: 'http://jsonplaceholder.typicode.com/posts/1' });
   console.log(data);
-  expect(1+2).toBe(3);
+  expect(1 + 2).toBe(3);
   // expect(data).toEqual({
   //   data: {
   //     body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',

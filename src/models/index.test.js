@@ -1,6 +1,5 @@
 import index from './index';
 
-/*
 test('测试普通函数', () => {
   // .not 测试相反的匹配，可以和下面的匹配器结合使用
 
@@ -32,7 +31,6 @@ test('测试普通函数', () => {
 
   expect(index.reducers.fetcherror({ abc: 1 }, { type: 'aaa' })).toEqual({ abc: 1 });
 });
-*/
 
 test('测试生成器函数', async () => {
   const fetch = index.effects.fetch(
@@ -50,17 +48,38 @@ test('测试生成器函数', async () => {
       call: (fn, a, b, c) => {
         return fn(a, b, c);
       },
-      put: () => {},
+      put: (a) => {
+        return a;
+      },
     },
   );
 
-  const select = fetch.next();
-  const call = await fetch.next(select.value).value;
-  fetch.next(call);
+  let nexstate = { value: undefined };
 
-  // for (const value of fetch) {
-  //   console.log(await value);
-  // }
+  for (let i = 0; i < Infinity; i++) {
+    nexstate = fetch.next(nexstate.value);
 
-  expect(index.reducers.fetcherror({ abc: 1 }, { type: 'aaa' })).toEqual({ abc: 1 });
+    try {
+      nexstate.value = await nexstate.value.then((res) => {
+        return res;
+      });
+    } catch (e) {
+      nexstate.value = nexstate.value;
+    }
+
+    if (nexstate.done === true) {
+      break;
+    }
+  }
+
+  // console.log(nexstate.value);
+
+  expect(nexstate.value.productinfo).toBe('facebook');
+  expect(nexstate.value.data).toEqual({
+    userId: 1,
+    id: 1,
+    title: 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
+    body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
+  });
+  expect(nexstate.value.headers).toEqual({});
 });

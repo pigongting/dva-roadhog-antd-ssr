@@ -21,13 +21,10 @@ export default {
   effects: {
     *fetch(action, { call, put, select }) {
       const { productinfo } = yield select(state => state.index);
-      // console.log(yield call(usersService.fetch, action, {}, {}));
-
       const { data, headers } = yield call(usersService.fetch, action, {}, {});
+      yield put({ type: 'save', payload: data });
 
-      // console.log(data);
-
-      // yield put({ type: 'save', payload: data });
+      return { productinfo, data, headers };
     },
   },
   subscriptions: {
