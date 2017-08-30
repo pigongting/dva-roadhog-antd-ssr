@@ -12,23 +12,22 @@ export default {
   state: initstate,
   reducers: {
     fetcherror(state, action) {
-      console.log(state);
-      console.log(action);
-      console.log(update);
+      // console.log(state);
+      // console.log(action);
+      // console.log(update);
       return { ...state };
     },
   },
   effects: {
     *fetch(action, { call, put, select }) {
-      const productinfo = yield select(state => state.index.productinfo);
+      const { productinfo } = yield select(state => state.index);
+      // console.log(yield call(usersService.fetch, action, {}, {}));
 
       const { data, headers } = yield call(usersService.fetch, action, {}, {});
 
-      console.log(data);
+      // console.log(data);
 
       // yield put({ type: 'save', payload: data });
-
-      return data;
     },
   },
   subscriptions: {

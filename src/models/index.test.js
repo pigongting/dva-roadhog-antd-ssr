@@ -1,5 +1,6 @@
 import index from './index';
 
+/*
 test('测试普通函数', () => {
   // .not 测试相反的匹配，可以和下面的匹配器结合使用
 
@@ -28,6 +29,38 @@ test('测试普通函数', () => {
   // toThrow 测试函数抛出的错误
 
   // 更多匹配器 http://facebook.github.io/jest/docs/expect.html
+
+  expect(index.reducers.fetcherror({ abc: 1 }, { type: 'aaa' })).toEqual({ abc: 1 });
+});
+*/
+
+test('测试生成器函数', async () => {
+  const fetch = index.effects.fetch(
+    {
+      type: 'index/fetch',
+    },
+    {
+      select: (fn) => {
+        return fn({
+          index: {
+            productinfo: 'facebook',
+          },
+        });
+      },
+      call: (fn, a, b, c) => {
+        return fn(a, b, c);
+      },
+      put: () => {},
+    },
+  );
+
+  const select = fetch.next();
+  const call = await fetch.next(select.value).value;
+  fetch.next(call);
+
+  // for (const value of fetch) {
+  //   console.log(await value);
+  // }
 
   expect(index.reducers.fetcherror({ abc: 1 }, { type: 'aaa' })).toEqual({ abc: 1 });
 });
