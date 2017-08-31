@@ -5,8 +5,8 @@
     "build": "cp public/index.ssr.html public/index.html && roadhog build",
     "server": "set NODE_ENV=production&& node server/index.js",
     "build:server": "npm run build && npm run server",
-    "test": "jest --findRelatedTests src/models/users.test.js --runInBand --no-cache --colors",
-    "lint": "eslint --ext .jsx,.js config",
+    "test": "jest --findRelatedTests src/components/Example.test.js --runInBand --no-cache --colors",
+    "lint": "eslint --ext .jsx,.js config/",
     "precommit": "npm run lint"
   },
   "jest": {
@@ -48,7 +48,8 @@
     "react": "^15.4.0",
     "react-addons-perf": "^15.4.2",
     "react-dom": "^15.4.0",
-    "react-intl": "^2.3.0"
+    "react-intl": "^2.3.0",
+    "react-test-renderer": "^15.6.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
