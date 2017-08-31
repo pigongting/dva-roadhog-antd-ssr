@@ -5,7 +5,7 @@
     "build": "cp public/index.ssr.html public/index.html && roadhog build",
     "server": "set NODE_ENV=production&& node server/index.js",
     "build:server": "npm run build && npm run server",
-    "test": "jest --findRelatedTests src/models/index.test.js --runInBand --no-cache --colors",
+    "test": "jest --findRelatedTests src/models/users.test.js --runInBand --no-cache --colors",
     "lint": "eslint --ext .jsx,.js config",
     "precommit": "npm run lint"
   },
