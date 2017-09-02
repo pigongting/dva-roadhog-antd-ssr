@@ -28,7 +28,7 @@ test('测试普通函数', () => {
   // toThrow 测试函数抛出的错误
 
   // 更多匹配器 http://facebook.github.io/jest/docs/expect.html
-
+  debugger;
   expect(index.reducers.fetcherror({ abc: 1 }, { type: 'aaa' })).toEqual({ abc: 1 });
 });
 
