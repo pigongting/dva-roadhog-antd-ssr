@@ -2,14 +2,16 @@ const localesReg = new RegExp('/en/|/zh/');
 const apiReg = new RegExp('/api/');
 
 export function getpruepath(pathname) {
-  return pathname.replace(/\/$/, '');
+  let pruepath = pathname.replace(/\/$/, '');
+  pruepath = pruepath.replace(/.*?(\.html)$/, '');
+  return pruepath;
 }
 
-export function getlocalname(pathname) {
+export function getlocalname(pruepath) {
   let localname = 'zh';
 
-  if (localesReg.test(pathname)) {
-    pathname.split('/')[1];
+  if (localesReg.test(pruepath)) {
+    pruepath.split('/')[1];
   }
 
   return localname;
@@ -19,7 +21,7 @@ export function removelocal(pathname) {
   const pruepath = getpruepath(pathname);
 
   if (localesReg.test(pruepath)) {
-    const localname = getlocalname(pathname);
+    const localname = getlocalname(pruepath);
     const localnameReg = new RegExp(`/${localname}`);
 
     return pruepath.replace(localnameReg, '');
@@ -28,12 +30,12 @@ export function removelocal(pathname) {
   }
 }
 
-export function historyreplace(history, pathname, next) {
-  if (!localesReg.test(pathname)) {
-    if (pathname === '') {
+export function historyreplace(history, pruepath, next) {
+  if (!localesReg.test(pruepath)) {
+    if (pruepath === '') {
       history.replace('/zh/index');
     } else {
-      history.replace(`/zh${pathname}`);
+      history.replace(`/zh${pruepath}`);
     }
   }
 }
